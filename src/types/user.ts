@@ -20,6 +20,14 @@ export const SearchUsersByNameInputSchema = {
   name: z.string().min(1).describe("Aranacak kullanıcı ismi")
 };
 
+export const SearchUsersByPhoneInputSchema = {
+  phone: z.string().min(10).max(20).describe("Aranacak Telefon numarası")
+};
+
+export const SearchUsersByEmailInputSchema = {
+  email: z.string().email().describe("Aranacak kullanıcı e-posta adresi")
+};
+
 export const AddUserInputSchema = {
   name: z.string().min(2).max(100).describe("Kullanıcının tam adı"),
   email: z.string().email().describe("E-posta adresi"),

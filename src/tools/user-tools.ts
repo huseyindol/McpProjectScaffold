@@ -4,7 +4,9 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { 
   GetUserByIdInputSchema,
   SearchUsersByNameInputSchema,
-  AddUserInputSchema 
+  AddUserInputSchema, 
+  SearchUsersByEmailInputSchema,
+  SearchUsersByPhoneInputSchema
 } from "../types/user.js";
 import { UserController } from "../controllers/user.controller.js";
 
@@ -44,6 +46,28 @@ export function registerUserTools(server: McpServer): void {
       inputSchema: SearchUsersByNameInputSchema,
     },
     UserController.handleSearchUsersByName
+  );
+
+  // Search users by email tool
+  server.registerTool(
+    "search_users_by_email",
+    {
+      title: "Kullanıcı Ara",
+      description: "E-posta adresine göre kullanıcı ara",
+      inputSchema: SearchUsersByEmailInputSchema,
+    },
+    UserController.handleSearchUsersByEmail
+  );
+
+  // Search users by phone tool
+  server.registerTool(
+    "search_users_by_phone",
+    {
+      title: "Kullanıcı Ara",
+      description: "Telefon numarasına göre kullanıcı ara",
+      inputSchema: SearchUsersByPhoneInputSchema,
+    },
+    UserController.handleSearchUsersByPhone
   );
 
   // Add user tool

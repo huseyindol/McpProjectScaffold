@@ -66,6 +66,16 @@ export class UserRepository {
   }
 
   /**
+   * Find user by phone
+   * @param phone - Phone to search for
+   * @returns Promise<User | null> - Found user or null
+   */
+  async findByPhone(phone: string): Promise<User | null> {
+    const users = await this.findAll();
+    return users.find(user => user.phone === phone) || null;
+  }
+
+  /**
    * Save all users to JSON file
    * @param users - Array of users to save
    * @returns Promise<boolean> - Success status

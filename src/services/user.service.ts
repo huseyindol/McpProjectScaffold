@@ -15,6 +15,7 @@ export interface ServiceResult<T> {
  * Context7 Pattern: Business rules, validation, error handling
  */
 export class UserService {
+  [x: string]: any;
   
   /**
    * Get all users - Simple pass-through with error handling
@@ -104,6 +105,70 @@ export class UserService {
         success: false,
         error: "Kullanıcı arama işleminde hata oluştu",
         data: []
+      };
+    }
+  }
+
+  /**
+   * Search users by email with business validation
+   * @param email - Search term
+   * @returns Promise<ServiceResult<User[]>>
+   */
+  async searchUsersByEmail(email: string): Promise<ServiceResult<User | null>> {
+    try {
+      // Business rule: Email must be a valid email address
+      if (!email.includes('@')) {
+        return {
+          success: false,
+          error: "E-posta adresi geçersiz",
+          data: null
+        };
+      }
+
+      const user = await userRepository.findByEmail(email);
+      
+      return {
+        success: true,
+        data: user,
+        message: user ? `"${email}" için kullanıcı bulundu` : `"${email}" e-posta adresiyle kullanıcı bulunamadı`
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: "Kullanıcı arama işleminde hata oluştu",
+        data: null
+      };
+    }
+  }
+
+  /**
+   * Search users by phone with business validation
+   * @param phone - Search term
+   * @returns Promise<ServiceResult<User | null>>
+   */
+  async searchUsersByPhone(phone: string): Promise<ServiceResult<User | null>> {
+    try {
+      // Business rule: Phone must be a valid phone number
+      if (!phone.includes(' ')) {
+        return {
+          success: false,
+          error: "Telefon numarası geçersiz",
+          data: null
+        };
+      }
+
+      const user = await userRepository.findByPhone(phone);
+      
+      return {
+        success: true,
+        data: user,
+        message: user ? `"${phone}" için kullanıcı bulundu` : `"${phone}" telefon numarasıyla kullanıcı bulunamadı`
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: "Kullanıcı arama işleminde hata oluştu",
+        data: null
       };
     }
   }

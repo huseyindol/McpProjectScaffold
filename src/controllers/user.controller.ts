@@ -106,6 +106,64 @@ export class UserController {
   }
 
   /**
+   * Handle Search Users By Email Request
+   */
+  static async handleSearchUsersByEmail({ email }: { email: string }): Promise<ToolResponse> {
+    try {
+      const result = await userService.searchUsersByEmail(email);
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: result.success && result.data
+              ? JSON.stringify(result.data, null, 2)
+              : result.message || result.error || "Kullanıcı bulunamadı",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Kullanıcı arama işleminde hata oluştu",
+          },
+        ],
+      };
+    }
+  }
+
+  /**
+   * Handle Search Users By Phone Request
+   */
+  static async handleSearchUsersByPhone({ phone }: { phone: string }): Promise<ToolResponse> {
+    try {
+      const result = await userService.searchUsersByPhone(phone);
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: result.success && result.data
+              ? JSON.stringify(result.data, null, 2)
+              : result.message || result.error || "Kullanıcı bulunamadı",
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Kullanıcı arama işleminde hata oluştu",
+          },
+        ],
+      };
+    }
+  }
+
+  /**
    * Handle Add User Request
    */
   static async handleAddUser({ name, email, phone }: { name: string; email: string; phone: string }): Promise<ToolResponse> {
