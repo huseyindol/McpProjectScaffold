@@ -1,5 +1,5 @@
 {
-  "name": "firsttry",
+  "name": "McpProjectScaffold",
   "module": "src/server.ts",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
