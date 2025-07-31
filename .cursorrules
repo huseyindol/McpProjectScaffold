@@ -1,0 +1,77 @@
+# MCP (Model Context Protocol) Geliştirme Kuralları
+
+## Proje Yapısı
+- `src/server.ts`: Ana MCP server dosyası
+- `data/`: JSON veri dosyalarının bulunduğu klasör
+- `package.json`: Proje bağımlılıkları ve scriptleri
+
+## MCP Server Geliştirme Kuralları
+
+### 1. Temel Yapı
+- Her MCP server `@modelcontextprotocol/sdk` kullanmalı
+- Server her zaman STDIO transport ile çalışmalı
+- Tool tanımları açık ve anlaşılır olmalı
+
+### 2. Tool Tanımlamaları
+- Her tool için `inputSchema` belirtilmeli
+- Tool isimleri snake_case formatında olmalı
+- Açıklayıcı descriptions yazılmalı
+- Required parametreler belirtilmeli
+
+### 3. Hata Yönetimi
+- JSON okuma hatalarını yakala
+- Kullanıcı bulunamama durumlarını ele al
+- Bilinmeyen tool çağrıları için hata fırlat
+
+### 4. Veri Yapısı
+- JSON dosyaları temiz ve tutarlı yapıda olmalı
+- Interface tanımlamaları TypeScript'te yapılmalı
+- Veri doğrulama fonksiyonları eklenebilir
+
+### 5. Development Scripts
+- `npm run server:dev`: Development modda çalıştırma
+- `npm run server:inspect`: MCP Inspector ile debug
+- `npm run server:build`: Production build
+
+### 6. Best Practices
+- Console.error kullanarak debug bilgileri ver
+- ES modules kullan
+- Async/await pattern tercih et
+- Clean code prensiplerini uygula
+
+## MCP Cursor IDE Konfigürasyonu
+- Bu proje MCP server geliştirmek için optimize edilmiş
+- TypeScript strict mode aktif
+- ESNext target kullanılıyor
+- Module resolution: bundler
+
+## Örnek Tool Kullanımı
+```typescript
+// Tool tanımı
+{
+  name: "get_user_by_id",
+  description: "ID'ye göre kullanıcı getir",
+  inputSchema: {
+    type: "object",
+    properties: {
+      id: { type: "number", description: "Kullanıcı ID'si" }
+    },
+    required: ["id"]
+  }
+}
+
+// Tool handler
+case "get_user_by_id":
+  const user = users.find(u => u.id === args.id);
+  return {
+    content: [{
+      type: "text",
+      text: user ? JSON.stringify(user, null, 2) : "Kullanıcı bulunamadı"
+    }]
+  };
+```
+
+## Debug ve Test
+- MCP Inspector kullanarak tool'ları test et
+- JSON dosyasının doğru formatlandığından emin ol
+- Error case'leri test et

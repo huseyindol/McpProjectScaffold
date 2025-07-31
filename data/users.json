@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Ahmet Yılmaz",
+    "email": "ahmet.yilmaz@example.com",
+    "phone": "+90 532 123 4567"
+  },
+  {
+    "id": 2,
+    "name": "Ayşe Demir",
+    "email": "ayse.demir@example.com",
+    "phone": "+90 533 987 6543"
+  },
+  {
+    "id": 3,
+    "name": "Mehmet Kaya",
+    "email": "mehmet.kaya@example.com",
+    "phone": "+90 534 456 7890"
+  },
+  {
+    "id": 4,
+    "name": "Fatma Özkan",
+    "email": "fatma.ozkan@example.com",
+    "phone": "+90 535 321 9876"
+  },
+  {
+    "id": 5,
+    "name": "Ali Çelik",
+    "email": "ali.celik@example.com",
+    "phone": "+90 536 654 3210"
+  },
+  {
+    "id": 6,
+    "name": "qwe",
+    "email": "qwe@qwe.cas",
+    "phone": "qwe"
+  }
+]
