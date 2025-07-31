@@ -1,80 +1,132 @@
 # User Info MCP Server
 
-Bu proje, Model Context Protocol (MCP) kullanarak kullanıcı bilgilerini JSON dosyasından sağlayan basit bir server'dır.
+🚀 **Gelişmiş Model Context Protocol (MCP) Server** - Context7 Best Practices ile geliştirilmiş kullanıcı yönetim sistemi.
 
-## Proje Yapısı
+Bu proje, modern layered architecture pattern kullanarak kullanıcı bilgilerini JSON dosyasından sağlayan profesyonel bir MCP server'dır. **Context7 MCP best practices** ve **clean architecture** prensipleri uygulanarak geliştirilmiştir.
+
+## 🏗️ Proje Mimarisi
 
 ```
-firstTry/
+McpProjectScaffold/
 ├── src/
-│   └── server.ts          # Ana MCP server dosyası
+│   ├── server.ts                   # 🎯 Ana MCP server (Entry Point)
+│   ├── controllers/
+│   │   └── user.controller.ts      # 🎮 Tool handlers (MCP Interface Layer)
+│   ├── services/
+│   │   └── user.service.ts         # 🧠 Business logic & validation
+│   ├── repositories/
+│   │   └── user.repository.ts      # 💾 Data access layer (JSON operations)
+│   ├── tools/
+│   │   ├── index.ts               # 🔧 Tool registration orchestrator
+│   │   └── user-tools.ts          # 📋 MCP tool definitions
+│   └── types/
+│       └── user.ts                # 📝 TypeScript interfaces & Zod schemas
 ├── data/
-│   └── users.json         # Kullanıcı verileri
-├── package.json           # Proje bağımlılıkları
-├── tsconfig.json          # TypeScript yapılandırması
-├── .cursorrules           # Cursor IDE kuralları
-└── README.md              # Bu dosya
+│   └── users.json                 # 💿 JSON veri dosyası
+├── package.json                   # 📦 Proje bağımlılıkları
+├── tsconfig.json                  # ⚙️ TypeScript konfigürasyonu
+└── README.md                      # 📖 Bu dosya
 ```
 
-## Özellikler
+### 🎨 Architecture Pattern: Layered Architecture (Context7 Pattern)
 
-MCP server dört temel tool sağlar:
+**Separation of Concerns** prensipleri:
+- **Controllers** → MCP tool handlers & response formatting
+- **Services** → Business logic, validation & error handling  
+- **Repositories** → Pure data access (JSON file operations)
+- **Tools** → MCP tool registration & schema definitions
+- **Types** → TypeScript interfaces & Zod validation schemas
 
-1. **get_all_users**: Tüm kullanıcıların listesini getirir
-2. **get_user_by_id**: Belirli bir ID'ye sahip kullanıcıyı getirir
-3. **search_users_by_name**: İsme göre kullanıcı arar
-4. **add_user**: Yeni kullanıcı ekler (name, email, phone gerekli)
+## ✨ Özellikler
 
-## User Veri Yapısı
+MCP server **6 gelişmiş tool** sağlar:
 
-Her kullanıcı şu bilgileri içerir:
-- `id`: Benzersiz kullanıcı kimliği (number)
-- `name`: Kullanıcının tam adı (string)
-- `email`: E-posta adresi (string)
-- `phone`: Telefon numarası (string)
+1. **get_all_users** → Tüm kullanıcıların listesini getirir
+2. **get_user_by_id** → ID'ye göre belirli kullanıcıyı getirir  
+3. **search_users_by_name** → İsme göre kullanıcı arar (partial match)
+4. **search_users_by_email** → E-posta adresine göre kullanıcı arar
+5. **search_users_by_phone** → Telefon numarasına göre kullanıcı arar
+6. **add_user** → Yeni kullanıcı ekler (validation + duplicate control)
 
-## Kurulum
+### 🔍 User Veri Yapısı
 
-1. Bağımlılıkları yükleyin:
+```typescript
+interface User {
+  id: number;        // Benzersiz kullanıcı kimliği (auto-increment)
+  name: string;      // Kullanıcının tam adı (2-100 karakter)
+  email: string;     // E-posta adresi (unique, email format)
+  phone: string;     // Telefon numarası (10-20 karakter)
+}
+```
+
+## 📦 Kurulum & Setup
+
+### 1. Bağımlılıkları Yükleyin
 ```bash
 npm install
 ```
 
-2. TypeScript'i derleyin:
+### 2. TypeScript Build
 ```bash
 npm run server:build
 ```
 
-## Teknoloji Stack
-
-- **Node.js** (v18+)
-- **TypeScript** (strict mode)
-- **Zod** (schema validation)
-- **MCP TypeScript SDK** (@modelcontextprotocol/sdk)
-- **ES Modules**
-
-## Kullanım
-
-### Development Modda Çalıştırma
+### 3. Development Mode
 ```bash
 npm run server:dev
 ```
 
-### MCP Inspector ile Test Etme
+### 4. MCP Inspector ile Test
 ```bash
 npm run server:inspect
 ```
 
-Bu komut MCP Inspector'ı açar ve tool'ları interaktif olarak test etmenizi sağlar.
+## 🛠️ Teknoloji Stack
 
-### Production Build
+### Core Technologies
+- **Node.js** (v18+) → JavaScript runtime
+- **TypeScript** (v5.8+) → Type-safe development  
+- **ES Modules** → Modern module system
+- **MCP TypeScript SDK** → Protocol implementation
+
+### Development & Quality Tools
+- **Zod** (v3.25+) → Runtime schema validation
+- **tsx** → TypeScript execution
+- **MCP Inspector** → Interactive tool testing
+- **Strict TypeScript** → Maximum type safety
+
+### Architecture Patterns
+- **Context7 MCP Best Practices** → Industry standards
+- **Layered Architecture** → Clean separation of concerns
+- **Repository Pattern** → Data access abstraction
+- **Service Layer Pattern** → Business logic encapsulation
+
+## 🚀 Kullanım
+
+### Development Scripts
 ```bash
+# Development mode (hot reload)
+npm run server:dev
+
+# TypeScript build
 npm run server:build
+
+# Watch mode build
+npm run server:build:watch
+
+# MCP Inspector (interactive testing)
+npm run server:inspect
 ```
 
-## Tool Kullanım Örnekleri
+### MCP Inspector Kullanımı
+```bash
+npm run server:inspect
+```
+Bu komut **MCP Inspector** web arayüzünü açar ve tool'ları interaktif olarak test etmenizi sağlar. Tarayıcıda `http://localhost:3000` adresinde açılır.
 
-### Tüm kullanıcıları getir
+## 🔧 MCP Tool Kullanım Örnekleri
+
+### 1. Tüm Kullanıcıları Getir
 ```json
 {
   "method": "tools/call",
@@ -85,7 +137,7 @@ npm run server:build
 }
 ```
 
-### Belirli bir kullanıcıyı getir
+### 2. ID'ye Göre Kullanıcı Getir
 ```json
 {
   "method": "tools/call",
@@ -98,7 +150,7 @@ npm run server:build
 }
 ```
 
-### İsme göre kullanıcı ara
+### 3. İsme Göre Kullanıcı Ara
 ```json
 {
   "method": "tools/call",
@@ -111,7 +163,33 @@ npm run server:build
 }
 ```
 
-### Yeni kullanıcı ekle
+### 4. E-posta ile Kullanıcı Ara
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "search_users_by_email",
+    "arguments": {
+      "email": "ahmet.yilmaz@example.com"
+    }
+  }
+}
+```
+
+### 5. Telefon ile Kullanıcı Ara
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "search_users_by_phone",
+    "arguments": {
+      "phone": "+90 532 123 4567"
+    }
+  }
+}
+```
+
+### 6. Yeni Kullanıcı Ekle
 ```json
 {
   "method": "tools/call",
@@ -126,9 +204,9 @@ npm run server:build
 }
 ```
 
-## Veri Dosyası Düzenleme
+## 📁 Veri Dosyası Düzenleme
 
-`data/users.json` dosyasını düzenleyerek yeni kullanıcılar ekleyebilir veya mevcut kullanıcı bilgilerini güncelleyebilirsiniz. Dosya formatı:
+`data/users.json` dosyasını düzenleyerek kullanıcı verilerini manuel olarak değiştirebilirsiniz:
 
 ```json
 [
@@ -137,52 +215,147 @@ npm run server:build
     "name": "Ahmet Yılmaz",
     "email": "ahmet.yilmaz@example.com",
     "phone": "+90 532 123 4567"
+  },
+  {
+    "id": 2,
+    "name": "Ayşe Demir", 
+    "email": "ayse.demir@example.com",
+    "phone": "+90 533 987 6543"
   }
 ]
 ```
 
-## Geliştirme Notları
+**⚠️ Not**: JSON formatını bozmamaya dikkat edin. Yeni kullanıcılar için `add_user` tool'unu kullanmak daha güvenlidir.
 
-- Bu proje MCP öğrenme amaçlı basit tutulmuştur
-- Veritabanı kullanılmamış, sadece JSON dosyası kullanılmıştır
-- **TypeScript strict mode** aktiftir
-- **Zod schema validation** kullanılmaktadır
-- **Runtime type safety** sağlanmıştır
-- Error handling eklenmiştir
-- ES modules kullanılmaktadır
-- Kullanıcı ekleme özelliği ile CRUD işlemleri desteklenmektedir
-- E-posta validasyonu ve duplicate kontrolü vardır
-- ID auto-increment sistemi kullanılmaktadır
-- **Input schema'lar Context7 MCP best practices'e uygun**
+## 🔗 MCP Client Konfigürasyonu
 
-## Güvenlik ve Validasyon
+Bu MCP server'ı çeşitli IDE'ler ve AI araçlarında kullanabilirsiniz:
+
+### Cursor IDE
+```json
+{
+  "mcpServers": {
+    "user-info-server": {
+      "command": "node",
+      "args": ["dist/server.js"],
+      "cwd": "/path/to/McpProjectScaffold"
+    }
+  }
+}
+```
+
+### Claude Desktop
+```json
+{
+  "mcpServers": {
+    "user-info-server": {
+      "command": "npm",
+      "args": ["run", "server:dev"],
+      "cwd": "/path/to/McpProjectScaffold"
+    }
+  }
+}
+```
+
+### VS Code (MCP Extension)
+```json
+{
+  "mcp": {
+    "servers": {
+      "user-info-server": {
+        "type": "stdio",
+        "command": "npm",
+        "args": ["run", "server:dev"],
+        "cwd": "/path/to/McpProjectScaffold"
+      }
+    }
+  }
+}
+```
+
+## 🔒 Güvenlik & Validasyon
 
 ### Zod ile Type-Safe Validasyon
-- **Schema-based validasyon**: Tüm input'lar Zod schema'ları ile doğrulanır
-- **Runtime type checking**: TypeScript + Zod ile çifte güvenlik
-- **Otomatik validasyon mesajları**: Zod'un built-in hata mesajları
-- **E-posta format validasyonu**: `z.string().email()` ile
-- **String uzunluk kontrolü**: `z.string().min(2).max(100)`
-- **Sayı validasyonu**: `z.number().int().positive()`
-- **Duplicate e-posta kontrolü**
-- **Required field validasyonu**
+- **Schema-based validasyon** → Tüm input'lar Zod schema'ları ile doğrulanır
+- **Runtime type checking** → TypeScript + Zod ile çifte güvenlik
+- **Otomatik validasyon mesajları** → Zod'un built-in error handling
+- **E-posta format kontrolü** → `z.string().email()` ile format doğrulama
+- **String uzunluk kontrolü** → `z.string().min(2).max(100)` ile range validation
+- **Sayı validasyonu** → `z.number().int().positive()` ile integer kontrolü
+- **Duplicate e-posta kontrolü** → Repository layer'da unique email kontrolü
+- **Required field validasyonu** → Zod schema ile zorunlu alan kontrolü
 
-### Zod Schema'ları
+### Zod Schema Örnekleri
 ```typescript
-const UserSchema = z.object({
+// User entity schema
+export const UserSchema = z.object({
   id: z.number().int().positive().describe("Benzersiz kullanıcı kimliği"),
   name: z.string().min(2).max(100).describe("Kullanıcının tam adı"),
   email: z.string().email().describe("E-posta adresi"),
   phone: z.string().min(10).max(20).describe("Telefon numarası")
 });
 
-const AddUserSchema = z.object({
+// Add user input schema
+export const AddUserInputSchema = {
   name: z.string().min(2).max(100).describe("Kullanıcının tam adı"),
   email: z.string().email().describe("E-posta adresi"),
   phone: z.string().min(10).max(20).describe("Telefon numarası")
-});
+};
 ```
 
-## MCP Hakkında
+## 🏗️ Geliştirme Notları
 
-Model Context Protocol (MCP), AI asistanlarına structured veri ve tool sağlamak için tasarlanmış bir protokoldür. Bu proje MCP server geliştirme konusunda pratik yapmak için idealdir.
+### Context7 MCP Best Practices ✅
+- **Modular architecture** → Layered separation of concerns
+- **Tool registration** → Clean tool definition & registration
+- **Error handling** → Comprehensive error management
+- **Type safety** → Full TypeScript + Zod validation
+- **Input schemas** → Context7 compatible schema definitions
+- **Clean responses** → Standardized MCP response format
+
+### Technical Features
+- **ES Modules** → Modern JavaScript module system
+- **Strict TypeScript** → Maximum type safety
+- **Auto-increment IDs** → Automatic ID generation
+- **Duplicate prevention** → Email uniqueness checks
+- **Business validation** → Service layer business rules
+- **Repository pattern** → Data access abstraction
+- **CRUD operations** → Full Create, Read, Update capabilities
+
+### Code Quality
+- **Separation of concerns** → Each layer has single responsibility
+- **Error boundaries** → Proper error catching & handling
+- **Validation layers** → Multiple validation levels
+- **Clean code** → Readable, maintainable codebase
+- **Type inference** → Zod to TypeScript type generation
+
+## 📚 MCP Protocol Hakkında
+
+**Model Context Protocol (MCP)**, AI asistanlarına structured veri ve tool sağlamak için tasarlanmış modern bir protokoldür. 
+
+### MCP'nin Avantajları:
+- **Standardized communication** → AI araçları arası standart iletişim
+- **Tool-based architecture** → Modular fonksiyonellik
+- **Real-time data access** → Canlı veri erişimi
+- **Type-safe operations** → Güvenli operasyonlar
+- **Cross-platform compatibility** → Platform bağımsızlık
+
+Bu proje, **Context7 MCP best practices** kullanarak profesyonel MCP server geliştirme konusunda pratik yapmak için tasarlanmıştır.
+
+---
+
+## 🤝 Katkıda Bulunma
+
+1. Fork yapın
+2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
+4. Branch'e push yapın (`git push origin feature/AmazingFeature`)
+5. Pull Request açın
+
+## 📝 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
+
+---
+
+**🚀 Happy Coding!** - Context7 MCP Best Practices ile geliştirilmiştir.
