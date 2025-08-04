@@ -1,14 +1,7 @@
 // User Service - Business Logic Layer (Context7 Best Practices)
-import { User, UserSchema } from "../types/user.js";
+import { User, UserServiceResult, UsersServiceResult, ServiceResult } from "../types/user.js";
+import { UserSchema } from "../schemas/user.schema.js";
 import { userRepository } from "../repositories/user.repository.js";
-
-// Service Result Types (Context7 Pattern)
-export interface ServiceResult<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
 
 /**
  * User Service Class - Business Logic & Validation

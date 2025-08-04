@@ -1,35 +1,74 @@
 import { z } from "zod";
+import { UserSchema } from "../schemas/user.schema.js";
 
-// User schema
-export const UserSchema = z.object({
-  id: z.number().int().positive().describe("Benzersiz kullanıcı kimliği"),
-  name: z.string().min(2).max(100).describe("Kullanıcının tam adı"),
-  email: z.string().email().describe("E-posta adresi"),
-  phone: z.string().min(10).max(20).describe("Telefon numarası")
-});
+// ===============================================
+// USER TYPE DEFINITIONS
+// ===============================================
+// Bu dosya sadece TypeScript interface'leri ve type'ları içerir
+// Validation schema'ları src/schemas/user.schema.ts dosyasında tanımlanır
 
-// User type
+/**
+ * User Interface - Ana kullanıcı type'ı
+ * UserSchema'dan otomatik türetilir
+ */
 export type User = z.infer<typeof UserSchema>;
 
-// Input schemas
-export const GetUserByIdInputSchema = {
-  id: z.number().int().positive().describe("Kullanıcının ID'si")
-};
+// ===============================================
+// SERVICE LAYER TYPES
+// ===============================================
 
-export const SearchUsersByNameInputSchema = {
-  name: z.string().min(1).describe("Aranacak kullanıcı ismi")
-};
+/**
+ * Service Result - Generic service response type
+ * Business logic layer'dan gelen response'lar için
+ */
+export interface ServiceResult<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
 
-export const SearchUsersByPhoneInputSchema = {
-  phone: z.string().min(10).max(20).describe("Aranacak Telefon numarası")
-};
+/**
+ * User Service Result Types
+ */
+export type UserServiceResult = ServiceResult<User>;
+export type UsersServiceResult = ServiceResult<User[]>;
 
-export const SearchUsersByEmailInputSchema = {
-  email: z.string().email().describe("Aranacak kullanıcı e-posta adresi")
-};
+// ===============================================
+// MCP TOOL RESPONSE TYPES
+// ===============================================
 
-export const AddUserInputSchema = {
-  name: z.string().min(2).max(100).describe("Kullanıcının tam adı"),
-  email: z.string().email().describe("E-posta adresi"),
-  phone: z.string().min(10).max(20).describe("Telefon numarası")
-};
+/**
+ * MCP Tool Response - Context7 Pattern
+ * Tüm MCP tool'ları bu format'ta response döner
+ */
+export interface ToolResponse {
+  [x: string]: unknown;
+  content: Array<{
+    type: "text";
+    text: string;
+  }>;
+}
+
+// ===============================================
+// UTILITY TYPES
+// ===============================================
+
+/**
+ * User Creation Data - ID olmadan kullanıcı verisi
+ */
+export type CreateUserData = Omit<User, 'id'>;
+
+/**
+ * User Update Data - Partial update için
+ */
+export type UpdateUserData = Partial<CreateUserData>;
+
+/**
+ * User Search Filters
+ */
+export interface UserSearchFilters {
+  name?: string;
+  email?: string;
+  phone?: string;
+}

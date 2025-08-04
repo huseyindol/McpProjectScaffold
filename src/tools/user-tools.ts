@@ -7,7 +7,7 @@ import {
   AddUserInputSchema, 
   SearchUsersByEmailInputSchema,
   SearchUsersByPhoneInputSchema
-} from "../types/user.js";
+} from "../schemas/user.schema.js";
 import { UserController } from "../controllers/user.controller.js";
 
 /**
