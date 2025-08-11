@@ -4,6 +4,10 @@
 
 Bu proje, modern layered architecture pattern kullanarak kullanıcı bilgilerini JSON dosyasından sağlayan profesyonel bir MCP server'dır. **Context7 MCP best practices** ve **clean architecture** prensipleri uygulanarak geliştirilmiştir.
 
+<a href="https://glama.ai/mcp/servers/@huseyindol/McpProjectScaffold">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@huseyindol/McpProjectScaffold/badge" alt="User Info Server MCP server" />
+</a>
+
 ## 🏗️ Proje Mimarisi
 
 ```
