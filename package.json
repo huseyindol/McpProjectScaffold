@@ -1,8 +1,12 @@
 {
   "name": "McpProjectScaffold",
+  "version": "1.0.0",
+  "description": "Professional MCP server with Gemini AI integration",
   "module": "src/server.ts",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
+    "@google/genai": "^0.6.0",
+    "dotenv": "^16.4.7",
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -16,7 +20,8 @@
     "server:build": "tsc",
     "server:build:watch": "tsc --watch",
     "server:dev": "tsx src/server.ts",
-    "server:inspect": "set DANGEROUSLY_OMIT_AUTH=true && bunx @modelcontextprotocol/inspector bun run server:dev"
+    "server:inspect": "set DANGEROUSLY_OMIT_AUTH=true && bunx @modelcontextprotocol/inspector bun run server:dev",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/src/server.js"
   },
   "type": "module"
 }
