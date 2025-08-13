@@ -16,10 +16,10 @@ export class GeminiService {
       const prompt = this.createParsingPrompt(query);
 
       const response = await this.genai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-flash-lite',
         contents: prompt,
         config: {
-          temperature: 0.7, // Düşük temperature ile tutarlı sonuçlar
+          temperature: 0.4, // Düşük temperature ile tutarlı sonuçlar
           responseMimeType: 'application/json',
         },
       });
