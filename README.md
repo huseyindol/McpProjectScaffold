@@ -359,3 +359,38 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 ---
 
 **🚀 Happy Coding!** - Context7 MCP Best Practices ile geliştirilmiştir.
+## Environment Variables Kurulumu
+
+Bu proje environment variables için dotenv kullanır. Başlamak için:
+
+1. `.env.example` dosyasını `.env` olarak kopyalayın:
+```bash
+cp .env.example .env
+```
+
+2. `.env` dosyasındaki değerleri kendi API anahtarlarınızla güncelleyin:
+```bash
+# Gemini AI API Configuration
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+
+# Gateway API Endpoints  
+GATEWAY_API_CONSUMERLOAN_LIST=https://your-real-api-domain.com/api/consumerloan/list
+GATEWAY_API_HOUSINGLOAN_LIST=https://your-real-api-domain.com/api/housingloan/list
+GATEWAY_API_VEHICLELOAN_LIST=https://your-real-api-domain.com/api/vehicleloan/list
+```
+
+3. Server çalıştırma:
+```bash
+npm run server:dev
+```
+
+## Dosyalar
+
+- `.env` - Environment variables (git'e eklenmez)
+- `.env.example` - Environment variables şablonu
+- `.gitignore` - `.env` dosyası zaten ignore listesinde
+
+## Gereksinimler
+
+- `dotenv` paketi otomatik olarak yüklenmiştir
+- `src/server.ts` dosyasında `import 'dotenv/config'` ile yüklenir

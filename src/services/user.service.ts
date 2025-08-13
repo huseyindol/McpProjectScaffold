@@ -1,14 +1,7 @@
 // User Service - Business Logic Layer (Context7 Best Practices)
-import { User, UserSchema } from "../types/user.js";
-import { userRepository } from "../repositories/user.repository.js";
-
-// Service Result Types (Context7 Pattern)
-export interface ServiceResult<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
+import { User, UserSchema } from '../types/user.js';
+import { userRepository } from '../repositories/user.repository.js';
+import { ServiceResult } from '../types/service.js';
 
 /**
  * User Service Class - Business Logic & Validation
@@ -16,7 +9,7 @@ export interface ServiceResult<T> {
  */
 export class UserService {
   [x: string]: any;
-  
+
   /**
    * Get all users - Simple pass-through with error handling
    * @returns Promise<ServiceResult<User[]>>
@@ -27,13 +20,13 @@ export class UserService {
       return {
         success: true,
         data: users,
-        message: `${users.length} kullanıcı bulundu`
+        message: `${users.length} kullanıcı bulundu`,
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcılar yüklenirken hata oluştu",
-        data: []
+        error: 'Kullanıcılar yüklenirken hata oluştu',
+        data: [],
       };
     }
   }
@@ -49,28 +42,28 @@ export class UserService {
       if (id <= 0) {
         return {
           success: false,
-          error: "Geçersiz kullanıcı ID'si. ID pozitif bir sayı olmalıdır."
+          error: "Geçersiz kullanıcı ID'si. ID pozitif bir sayı olmalıdır.",
         };
       }
 
       const user = await userRepository.findById(id);
-      
+
       if (!user) {
         return {
           success: false,
-          error: `ID ${id} ile kullanıcı bulunamadı`
+          error: `ID ${id} ile kullanıcı bulunamadı`,
         };
       }
 
       return {
         success: true,
         data: user,
-        message: "Kullanıcı başarıyla bulundu"
+        message: 'Kullanıcı başarıyla bulundu',
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcı getirilirken hata oluştu"
+        error: 'Kullanıcı getirilirken hata oluştu',
       };
     }
   }
@@ -86,25 +79,26 @@ export class UserService {
       if (name.trim().length < 2) {
         return {
           success: false,
-          error: "Arama terimi en az 2 karakter olmalıdır",
-          data: []
+          error: 'Arama terimi en az 2 karakter olmalıdır',
+          data: [],
         };
       }
 
       const users = await userRepository.findByName(name);
-      
+
       return {
         success: true,
         data: users,
-        message: users.length > 0 
-          ? `"${name}" için ${users.length} kullanıcı bulundu`
-          : `"${name}" ismiyle kullanıcı bulunamadı`
+        message:
+          users.length > 0
+            ? `"${name}" için ${users.length} kullanıcı bulundu`
+            : `"${name}" ismiyle kullanıcı bulunamadı`,
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcı arama işleminde hata oluştu",
-        data: []
+        error: 'Kullanıcı arama işleminde hata oluştu',
+        data: [],
       };
     }
   }
@@ -120,23 +114,23 @@ export class UserService {
       if (!email.includes('@')) {
         return {
           success: false,
-          error: "E-posta adresi geçersiz",
-          data: null
+          error: 'E-posta adresi geçersiz',
+          data: null,
         };
       }
 
       const user = await userRepository.findByEmail(email);
-      
+
       return {
         success: true,
         data: user,
-        message: user ? `"${email}" için kullanıcı bulundu` : `"${email}" e-posta adresiyle kullanıcı bulunamadı`
+        message: user ? `"${email}" için kullanıcı bulundu` : `"${email}" e-posta adresiyle kullanıcı bulunamadı`,
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcı arama işleminde hata oluştu",
-        data: null
+        error: 'Kullanıcı arama işleminde hata oluştu',
+        data: null,
       };
     }
   }
@@ -152,23 +146,23 @@ export class UserService {
       if (!phone.includes(' ')) {
         return {
           success: false,
-          error: "Telefon numarası geçersiz",
-          data: null
+          error: 'Telefon numarası geçersiz',
+          data: null,
         };
       }
 
       const user = await userRepository.findByPhone(phone);
-      
+
       return {
         success: true,
         data: user,
-        message: user ? `"${phone}" için kullanıcı bulundu` : `"${phone}" telefon numarasıyla kullanıcı bulunamadı`
+        message: user ? `"${phone}" için kullanıcı bulundu` : `"${phone}" telefon numarasıyla kullanıcı bulunamadı`,
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcı arama işleminde hata oluştu",
-        data: null
+        error: 'Kullanıcı arama işleminde hata oluştu',
+        data: null,
       };
     }
   }
@@ -185,7 +179,7 @@ export class UserService {
       if (!inputValidation.success) {
         return {
           success: false,
-          error: `Validasyon hatası: ${inputValidation.error.message}`
+          error: `Validasyon hatası: ${inputValidation.error.message}`,
         };
       }
 
@@ -194,7 +188,7 @@ export class UserService {
       if (existingUser) {
         return {
           success: false,
-          error: `Bu e-posta adresi zaten kullanımda (ID: ${existingUser.id})`
+          error: `Bu e-posta adresi zaten kullanımda (ID: ${existingUser.id})`,
         };
       }
 
@@ -203,7 +197,7 @@ export class UserService {
       if (!emailRegex.test(userData.email)) {
         return {
           success: false,
-          error: "Geçersiz e-posta formatı"
+          error: 'Geçersiz e-posta formatı',
         };
       }
 
@@ -211,28 +205,28 @@ export class UserService {
       const sanitizedData = {
         name: userData.name.trim(),
         email: userData.email.toLowerCase().trim(),
-        phone: userData.phone.trim()
+        phone: userData.phone.trim(),
       };
 
       // Create user through repository
       const newUser = await userRepository.create(sanitizedData);
-      
+
       if (!newUser) {
         return {
           success: false,
-          error: "Kullanıcı oluşturulurken bir hata oluştu"
+          error: 'Kullanıcı oluşturulurken bir hata oluştu',
         };
       }
 
       return {
         success: true,
         data: newUser,
-        message: "Kullanıcı başarıyla oluşturuldu"
+        message: 'Kullanıcı başarıyla oluşturuldu',
       };
     } catch (error) {
       return {
         success: false,
-        error: "Kullanıcı oluşturma işleminde beklenmeyen bir hata oluştu"
+        error: 'Kullanıcı oluşturma işleminde beklenmeyen bir hata oluştu',
       };
     }
   }
@@ -245,25 +239,25 @@ export class UserService {
   async validateUserData(userData: Partial<User>): Promise<ServiceResult<boolean>> {
     try {
       const validation = UserSchema.partial().safeParse(userData);
-      
+
       if (!validation.success) {
         return {
           success: false,
           error: `Validasyon hatası: ${validation.error.message}`,
-          data: false
+          data: false,
         };
       }
 
       return {
         success: true,
         data: true,
-        message: "Veri doğrulaması başarılı"
+        message: 'Veri doğrulaması başarılı',
       };
     } catch (error) {
       return {
         success: false,
-        error: "Validasyon işleminde hata oluştu",
-        data: false
+        error: 'Validasyon işleminde hata oluştu',
+        data: false,
       };
     }
   }

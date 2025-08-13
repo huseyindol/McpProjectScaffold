@@ -1,14 +1,6 @@
 // User Controller - Tool Handlers Layer (Context7 Best Practices)
 import { userService } from "../services/user.service.js";
-
-// MCP Tool Response Types (Context7 Pattern - MCP SDK Compatible)
-interface ToolResponse {
-  [x: string]: unknown;
-  content: Array<{
-    type: "text";
-    text: string;
-  }>;
-}
+import { ToolResponse } from "../types/tools.js";
 
 /**
  * User Controller Class - Tool Handlers Layer
