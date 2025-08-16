@@ -5,6 +5,7 @@ import { makeHttpsRequest } from '../utils/httpRequest';
 import { Logger } from '../utils/logger';
 import { LoanDataService } from '../../data/loan-data-service';
 import { LoanAggregateService } from '../services/loan.aggregate.service';
+import { formatCurrency } from '../utils/helpers';
 
 export class LoanAggregateController {
   private aiService: GeminiService;
@@ -130,10 +131,10 @@ Aradığınız kriterlere uygun kredi bulunamadı.
 
 **Arama Kriterleri:**
 - Kredi Türü: ${this.loanDataService.getLoanTypeDisplayName(result.parsedParams.type)}
-- Tutar: ${this.formatCurrency(result.parsedParams.amount)}
+- Tutar: ${formatCurrency(result.parsedParams.amount)}
 - Vade: ${result.parsedParams.termMonths} ay
 - Envanter: ${result.parsedParams.inventory}
-- Nakit: ${this.formatCurrency(result.parsedParams.cash)}
+- Nakit: ${formatCurrency(result.parsedParams.cash)}
 
 Lütfen farklı kriterlerle tekrar deneyin.`;
     }
@@ -142,10 +143,10 @@ Lütfen farklı kriterlerle tekrar deneyin.`;
 
 **Arama Kriterleri:**
 - Kredi Türü: ${this.loanDataService.getLoanTypeDisplayName(result.parsedParams.type)}
-- Tutar: ${this.formatCurrency(result.parsedParams.amount)}
+- Tutar: ${formatCurrency(result.parsedParams.amount)}
 - Vade: ${result.parsedParams.termMonths} ay
 - Envanter: ${result.parsedParams.inventory}
-- Nakit: ${this.formatCurrency(result.parsedParams.cash)}
+- Nakit: ${formatCurrency(result.parsedParams.cash)}
 ---
 
 **Bulunan Krediler:**
@@ -156,8 +157,8 @@ Lütfen farklı kriterlerle tekrar deneyin.`;
       output += `**${index + 1}. ${loan.bankName}**
 🏦 Banka: ${loan.bankName}
 📊 Faiz Oranı: %${loan.interestRate}
-💰 Aylık Ödeme: ${this.formatCurrency(loan.monthlyPayment)}
-💳 Toplam Ödeme: ${this.formatCurrency(loan.totalPayment)}
+💰 Aylık Ödeme: ${formatCurrency(loan.monthlyPayment)}
+💳 Toplam Ödeme: ${formatCurrency(loan.totalPayment)}
 ℹ️ ${loan.eligibilityNote}
 
 `;
@@ -167,14 +168,5 @@ Lütfen farklı kriterlerle tekrar deneyin.`;
 💡 **Not:** Faiz oranları değişkenlik gösterebilir. Güncel bilgiler için ilgili bankaya başvurunuz.`;
 
     return output;
-  }
-
-  private formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('tr-TR', {
-      style: 'currency',
-      currency: 'TRY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
   }
 }

@@ -1,13 +1,12 @@
 // User Controller - Tool Handlers Layer (Context7 Best Practices)
-import { userService } from "../services/user.service.js";
-import { ToolResponse } from "../types/tools.js";
+import { userService } from '../services/user.service.js';
+import { ToolResponse } from '../types/tools.js';
 
 /**
  * User Controller Class - Tool Handlers Layer
  * Context7 Pattern: Clean separation - handlers only, registration elsewhere
  */
 export class UserController {
-
   // ===== EXPORTED TOOL HANDLERS (Context7 Pattern: Clean & Focused) =====
 
   /**
@@ -16,14 +15,12 @@ export class UserController {
   static async handleGetAllUsers(): Promise<ToolResponse> {
     try {
       const result = await userService.getAllUsers();
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success 
-              ? JSON.stringify(result.data, null, 2)
-              : result.error || "Bilinmeyen hata",
+            type: 'text',
+            text: result.success ? JSON.stringify(result.data, null, 2) : result.error || 'Bilinmeyen hata',
           },
         ],
       };
@@ -31,7 +28,7 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
+            type: 'text',
             text: "Tool handler'da beklenmeyen hata oluştu",
           },
         ],
@@ -45,14 +42,12 @@ export class UserController {
   static async handleGetUserById({ id }: { id: number }): Promise<ToolResponse> {
     try {
       const result = await userService.getUserById(id);
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success 
-              ? JSON.stringify(result.data, null, 2)
-              : result.error || "Kullanıcı bulunamadı",
+            type: 'text',
+            text: result.success ? JSON.stringify(result.data, null, 2) : result.error || 'Kullanıcı bulunamadı',
           },
         ],
       };
@@ -60,8 +55,8 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
-            text: "Kullanıcı getirme işleminde hata oluştu",
+            type: 'text',
+            text: 'Kullanıcı getirme işleminde hata oluştu',
           },
         ],
       };
@@ -74,14 +69,15 @@ export class UserController {
   static async handleSearchUsersByName({ name }: { name: string }): Promise<ToolResponse> {
     try {
       const result = await userService.searchUsersByName(name);
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success && result.data && result.data.length > 0
-              ? JSON.stringify(result.data, null, 2)
-              : result.message || result.error || "Kullanıcı bulunamadı",
+            type: 'text',
+            text:
+              result.success && result.data && result.data.length > 0
+                ? JSON.stringify(result.data, null, 2)
+                : result.message || result.error || 'Kullanıcı bulunamadı',
           },
         ],
       };
@@ -89,8 +85,8 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
-            text: "Kullanıcı arama işleminde hata oluştu",
+            type: 'text',
+            text: 'Kullanıcı arama işleminde hata oluştu',
           },
         ],
       };
@@ -103,14 +99,15 @@ export class UserController {
   static async handleSearchUsersByEmail({ email }: { email: string }): Promise<ToolResponse> {
     try {
       const result = await userService.searchUsersByEmail(email);
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success && result.data
-              ? JSON.stringify(result.data, null, 2)
-              : result.message || result.error || "Kullanıcı bulunamadı",
+            type: 'text',
+            text:
+              result.success && result.data
+                ? JSON.stringify(result.data, null, 2)
+                : result.message || result.error || 'Kullanıcı bulunamadı',
           },
         ],
       };
@@ -118,8 +115,8 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
-            text: "Kullanıcı arama işleminde hata oluştu",
+            type: 'text',
+            text: 'Kullanıcı arama işleminde hata oluştu',
           },
         ],
       };
@@ -132,14 +129,15 @@ export class UserController {
   static async handleSearchUsersByPhone({ phone }: { phone: string }): Promise<ToolResponse> {
     try {
       const result = await userService.searchUsersByPhone(phone);
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success && result.data
-              ? JSON.stringify(result.data, null, 2)
-              : result.message || result.error || "Kullanıcı bulunamadı",
+            type: 'text',
+            text:
+              result.success && result.data
+                ? JSON.stringify(result.data, null, 2)
+                : result.message || result.error || 'Kullanıcı bulunamadı',
           },
         ],
       };
@@ -147,8 +145,8 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
-            text: "Kullanıcı arama işleminde hata oluştu",
+            type: 'text',
+            text: 'Kullanıcı arama işleminde hata oluştu',
           },
         ],
       };
@@ -158,17 +156,25 @@ export class UserController {
   /**
    * Handle Add User Request
    */
-  static async handleAddUser({ name, email, phone }: { name: string; email: string; phone: string }): Promise<ToolResponse> {
+  static async handleAddUser({
+    name,
+    email,
+    phone,
+  }: {
+    name: string;
+    email: string;
+    phone: string;
+  }): Promise<ToolResponse> {
     try {
       const result = await userService.createUser({ name, email, phone });
-      
+
       return {
         content: [
           {
-            type: "text",
-            text: result.success 
+            type: 'text',
+            text: result.success
               ? `${result.message}\n${JSON.stringify(result.data, null, 2)}`
-              : result.error || "Kullanıcı oluşturulamadı",
+              : result.error || 'Kullanıcı oluşturulamadı',
           },
         ],
       };
@@ -176,8 +182,8 @@ export class UserController {
       return {
         content: [
           {
-            type: "text",
-            text: "Kullanıcı oluşturma işleminde hata oluştu",
+            type: 'text',
+            text: 'Kullanıcı oluşturma işleminde hata oluştu',
           },
         ],
       };
