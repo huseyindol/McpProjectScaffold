@@ -8,29 +8,49 @@ import { LoanAggregateService } from '../services/loan.aggregate.service';
 import { formatCurrency } from '../utils/helpers';
 
 export class LoanAggregateController {
+  private static instance: LoanAggregateController | null = null;
   private aiService: GeminiService;
   private loanDataService: LoanDataService;
   private loanAggregateService: LoanAggregateService;
 
-  constructor() {
-    // Gemini API key'i environment'dan al
+  private constructor() {
+    // Gemini API key'i environment'dan al - static method'da kontrol ediliyor
     const geminiApiKey = process.env.GEMINI_API_KEY || 'dummyKey';
     if (!geminiApiKey) {
       Logger.error('❌ GEMINI_API_KEY environment variable gerekli!');
       Logger.error('Kullanım: GEMINI_API_KEY=your_key_here npm start');
       process.exit(1);
     }
-    Logger.info('Gemini API key:', geminiApiKey);
-    this.aiService = new GeminiService(geminiApiKey);
-    this.loanDataService = new LoanDataService();
-    this.loanAggregateService = new LoanAggregateService();
+    Logger.info('Gemini API key:', geminiApiKey.substring(0, 5) + '...');
+
+    // Context7 Pattern: Use singleton services for resource optimization
+    this.aiService = GeminiService.getInstance(geminiApiKey);
+    this.loanDataService = LoanDataService.getInstance();
+    this.loanAggregateService = new LoanAggregateService(); // Stateless, no singleton needed
   }
 
-  async handleSearchLoans({ query }: { query: string }): Promise<ToolResponse> {
+  /**
+   * Singleton Instance Getter - Context7 Pattern
+   * Ensures only one instance exists for resource efficiency
+   */
+  private static getInstance(): LoanAggregateController {
+    if (!LoanAggregateController.instance) {
+      LoanAggregateController.instance = new LoanAggregateController();
+    }
+    return LoanAggregateController.instance;
+  }
+
+  /**
+   * Static Handler for Search Loans Tool - Context7 Pattern
+   * Tool handler layer with singleton instance access
+   */
+  static async handleSearchLoans({ query }: { query: string }): Promise<ToolResponse> {
     try {
       Logger.query(`Kredi sorgusu alındı`, { query });
-      const result = await this.searchLoans(query);
-      const formattedResult = this.formatSearchResult(result);
+
+      const instance = LoanAggregateController.getInstance();
+      const result = await instance.searchLoans(query);
+      const formattedResult = instance.formatSearchResult(result);
 
       Logger.tool('search_loans', { query }, `${result.totalFound} kredi bulundu`);
 
@@ -43,6 +63,7 @@ export class LoanAggregateController {
         ],
       };
     } catch (error) {
+      Logger.error('Search loans tool error:', error);
       return {
         content: [
           {

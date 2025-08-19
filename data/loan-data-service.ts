@@ -1,6 +1,7 @@
 import { LoanDetail, LoanSearchParams, LoanType } from '../src/types/loans';
 
 export class LoanDataService {
+  private static instance: LoanDataService | null = null;
   private mockLoans: LoanDetail[] = [
     // Konut Kredileri
     {
@@ -128,6 +129,21 @@ export class LoanDataService {
       eligibilityNote: 'Hibrit/elektrikli araçlar için özel oran',
     },
   ];
+
+  /**
+   * Singleton Instance Getter - Context7 Pattern
+   * Optimizes large mock data array memory usage
+   */
+  static getInstance(): LoanDataService {
+    if (!LoanDataService.instance) {
+      LoanDataService.instance = new LoanDataService();
+    }
+    return LoanDataService.instance;
+  }
+
+  private constructor() {
+    // Private constructor for singleton pattern
+  }
 
   searchLoans(params: LoanSearchParams): LoanDetail[] {
     // İlgili kredi türündeki kredileri filtrele

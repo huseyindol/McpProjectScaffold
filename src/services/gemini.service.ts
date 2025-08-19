@@ -4,11 +4,26 @@ import { Logger } from '../utils/logger';
 import { LoanType } from '../types/loans';
 
 export class GeminiService {
+  private static instance: GeminiService | null = null;
   private genai: GoogleGenAI;
 
-  constructor(apiKey: string) {
-    Logger.debug('Gemini API key:', apiKey);
+  private constructor(apiKey: string) {
+    Logger.debug('Gemini API key:', apiKey.substring(0, 5) + '...');
     this.genai = new GoogleGenAI({ apiKey });
+  }
+
+  /**
+   * Singleton Instance Getter - Context7 Pattern
+   * Optimizes GoogleGenAI instance creation and API connections
+   */
+  static getInstance(apiKey?: string): GeminiService {
+    if (!GeminiService.instance) {
+      if (!apiKey) {
+        throw new Error('API key required for first initialization');
+      }
+      GeminiService.instance = new GeminiService(apiKey);
+    }
+    return GeminiService.instance;
   }
 
   async loansParseQuery(query: string): Promise<ParsedQuery> {
